@@ -23,8 +23,15 @@ const Score = ({name, value}) => (
   </div>
 )
 
-const Stats = ({scores}) => {
+const Statistics = ({scores}) => {
   const total = scores.good + scores.neutral + scores.bad
+  if (total === 0)
+    return (
+      <div>
+        <h1>statistics</h1>
+        <div>No feedback given</div>
+      </div>
+    )
   const average = (scores.good + scores.bad * -1) / total
   const positive = scores.good / total * 100
   return (
@@ -49,7 +56,7 @@ const App = () => {
   return (
     <>
       <Feedback scores={scores} />
-      <Stats scores={scores} />
+      <Statistics scores={scores} />
     </>
   )
 }
