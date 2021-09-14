@@ -17,7 +17,7 @@ const Feedback = ({scores}) => {
   )
 }
 
-const Score = ({name, value}) => (
+const StatisticLine = ({name, value}) => (
   <div>
     {name} {value}
   </div>
@@ -37,12 +37,12 @@ const Statistics = ({scores}) => {
   return (
     <div>
       <h1>statistics</h1>
-      <Score name='good' value={scores.good} />
-      <Score name='neutral' value={scores.neutral} />
-      <Score name='bad' value={scores.bad} />
-      <Score name='all' value={total} />
-      <Score name='average' value={average} />
-      <Score name='positive' value={positive + ' %'} />
+      <StatisticLine name='good' value={scores.good} />
+      <StatisticLine name='neutral' value={scores.neutral} />
+      <StatisticLine name='bad' value={scores.bad} />
+      <StatisticLine name='all' value={total} />
+      <StatisticLine name='average' value={average} />
+      <StatisticLine name='positive' value={positive + ' %'} />
     </div>
   )
 }
