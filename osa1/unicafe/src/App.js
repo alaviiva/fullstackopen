@@ -24,12 +24,18 @@ const Score = ({name, value}) => (
 )
 
 const Stats = ({scores}) => {
+  const total = scores.good + scores.neutral + scores.bad
+  const average = (scores.good + scores.bad * -1) / total
+  const positive = scores.good / total * 100
   return (
     <div>
       <h1>statistics</h1>
       <Score name='good' value={scores.good} />
       <Score name='neutral' value={scores.neutral} />
       <Score name='bad' value={scores.bad} />
+      <Score name='all' value={total} />
+      <Score name='average' value={average} />
+      <Score name='positive' value={positive + ' %'} />
     </div>
   )
 }
