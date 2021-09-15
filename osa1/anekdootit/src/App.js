@@ -2,6 +2,19 @@ import React, { useState } from 'react'
 
 const randomInt = (max) => Math.floor(Math.random() * max)
 
+const Anecdote = ({anecdote, votes}) => {
+  return (
+    <>
+      <div>
+        {anecdote}
+      </div>
+      <div>
+        has {votes} votes
+      </div>
+    </>
+  )
+}
+
 const App = () => {
   const anecdotes = [
     'If it hurts, do it more often.',
@@ -22,16 +35,26 @@ const App = () => {
     setVotes(newVotes)
   }
 
+  const mostVotes = () => {
+    let i = 0
+    votes.forEach((item, index) => {
+      if (item > votes[i]) i = index
+    })
+    return i
+  }
+
   return (
     <>
-      <div>
-        {anecdotes[selected]}
-      </div>
-      <div>
-        has {votes[selected]} votes
-      </div>
+      <h1>
+        Anecdote of the day
+      </h1>
+      <Anecdote anecdote={anecdotes[selected]} votes={votes[selected]} />
       <button onClick={() => vote(selected)}>vote</button>
       <button onClick={() => setSelected(randomInt(anecdotes.length))}>next anecdote</button>
+      <h1>
+        Anecdote with most votes
+      </h1>
+      <Anecdote anecdote={anecdotes[mostVotes()]} votes={votes[mostVotes()]} />
     </>
   )
 }
