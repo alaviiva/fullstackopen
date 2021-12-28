@@ -37,11 +37,35 @@ const Filter = ({nameFilter, handleFilterChange}) => {
   )
 }
 
+const Notification = ({ message, type }) => {
+  if (message === null) {
+    return null
+  }
+
+  const notice = {
+    color: 'green',
+    backgroundColor: '#888888'
+  }
+
+  const error = {
+    color: 'red',
+    backgroundColor: '#888888'
+  }
+
+  return (
+    <div style={type ? notice : error}>
+      {message}
+    </div>
+  )
+}
+
 const App = () => {
   const [persons, setPersons] = useState([])
   const [ newName, setNewName ] = useState('')
   const [ newNumber, setNewNumber ] = useState('')
   const [ nameFilter, setNameFilter ] = useState('')
+  const [ message, setMessage ] = useState('')
+  const [ messageType, setMessageType ] = useState(true)
 
   useEffect(() => {
     personsService.getAll().then(pers => {
@@ -67,6 +91,7 @@ const App = () => {
       setPersons(persons.concat(p))
       setNewName('')
       setNewNumber('')
+      showMessage(`Added ${p.name}`, true)
     })
   }
 
@@ -86,6 +111,7 @@ const App = () => {
     if (window.confirm(`Delete ${person.name}?`))
       personsService.remove(person.id).then(() => {
         setPersons(persons.filter(p => p.id !== person.id))
+        showMessage(`Deleted ${person.name}`, true)
       })
   }
 
@@ -95,7 +121,18 @@ const App = () => {
         setPersons(persons.map(p => p.id === person.id ? person : p))
         setNewName('')
         setNewNumber('')
+        showMessage(`Updated ${person.name}`, true)
+      }).catch(error => {
+        showMessage(`${person.name}  was already deleted from server`, false)
+        setPersons(persons.filter(p => p.id !== id))
       })
+
+  }
+
+  const showMessage = (msg, type) => {
+    setMessage(msg)
+    setMessageType(type)
+    setTimeout(() => setMessage(''), 3000)
   }
 
 
@@ -106,6 +143,7 @@ const App = () => {
   return (
     <div>
       <h2>Phonebook</h2>
+      <Notification message={message} type={messageType} />
       <Filter nameFilter={nameFilter} handleFilterChange={handleFilterChange} />
 
       <h3>Add new</h3>
