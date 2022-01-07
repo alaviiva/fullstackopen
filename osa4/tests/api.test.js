@@ -70,6 +70,33 @@ test('add new blog with undefined title and author', async () => {
     .expect('Content-Type', /application\/json/)
 })
 
+test('update likes on a blog', async () => {
+  const bloglist = await helper.blogsInDb()
+  const b = bloglist.find(b => b.title === 'kala')
+  expect(b.likes).toBe(3)
+  const url = `/api/blogs/${b.id}`
+  const response = await api.put(url)
+    .send({likes: 5})
+    .expect(200)
+    .expect('Content-Type', /application\/json/)
+
+  expect(response.body.likes).toBe(5)
+})
+
+test('delete blog', async () => {
+  const bloglist = await helper.blogsInDb()
+  const b = bloglist.find(b => b.title === 'kala')
+  const url = `/api/blogs/${b.id}`
+  const response = await api.delete(url)
+    .send()
+    .expect(204)
+
+    const newbloglist = await helper.blogsInDb()
+    expect(newbloglist).toHaveLength(bloglist.length - 1)
+    expect(newbloglist.find(b => b.title === 'kala')).toBeUndefined()
+})
+
+
 afterAll(() => {
   mongoose.connection.close()
 })
