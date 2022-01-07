@@ -55,6 +55,21 @@ test('add new blog with undefined likes', async () => {
   expect(b.likes).toBe(0)
 })
 
+test('add new blog with undefined title and author', async () => {
+  await api.post('/api/blogs')
+    .send({url: 'hjkl'})
+    .expect(400)
+    .expect('Content-Type', /application\/json/)
+  await api.post('/api/blogs')
+    .send({title: 'kala', url: 'hjkl'})
+    .expect(400)
+    .expect('Content-Type', /application\/json/)
+  await api.post('/api/blogs')
+    .send({author: 'kissa', url: 'hjkl'})
+    .expect(400)
+    .expect('Content-Type', /application\/json/)
+})
+
 afterAll(() => {
   mongoose.connection.close()
 })
