@@ -17,6 +17,7 @@ test('get list of blogs', async () => {
   const titles = response.body.map(r => r.title)
   expect(response.body).toHaveLength(helper.initialBlogs.length)
   expect(titles).toContain('kalaa kasoittain kalaa')
+  expect(response.body[0].id).toBeDefined()
 })
 
 afterAll(() => {
