@@ -38,6 +38,23 @@ test('add new blog', async () => {
   expect(titles).toContain('Olet kala')
 })
 
+test('add new blog with undefined likes', async () => {
+  const newblog = {
+    title: 'Olet kala',
+    author: 'fisu',
+    url: 'whatever'
+  }
+  const response = await api.post('/api/blogs')
+    .send(newblog)
+    .expect(201)
+    .expect('Content-Type', /application\/json/)
+
+  const bloglist = await helper.blogsInDb()
+  expect(bloglist).toHaveLength(helper.initialBlogs.length + 1)
+  const b = bloglist.find(b => b.title === 'Olet kala')
+  expect(b.likes).toBe(0)
+})
+
 afterAll(() => {
   mongoose.connection.close()
 })
