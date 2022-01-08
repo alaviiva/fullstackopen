@@ -1,15 +1,19 @@
 import React, { useState, useEffect } from 'react'
 import BlogList from './components/Blog'
 import Login from './components/Login'
+import Createblog from './components/Createblog'
 import blogService from './services/blogs'
 import loginService from './services/login'
 
 const App = () => {
   const [blogs, setBlogs] = useState([])
-  const [errorMessage, setErrorMessage] = useState(null)
+  const [message, setMessage] = useState(null)
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
   const [user, setUser] = useState(null)
+  const [title, setTitle] = useState('')
+  const [author, setAuthor] = useState('')
+  const [url, setUrl] = useState('')
 
 
   useEffect(() => {
@@ -24,7 +28,7 @@ const App = () => {
     if (loggedJSON) {
       const user = JSON.parse(loggedJSON)
       setUser(user)
-      //noteService.setToken(user.token)
+      blogService.setToken(user.token)
     }
   }, [])
 
@@ -40,31 +44,60 @@ const App = () => {
       setUsername('')
       setPassword('')
     } catch (exception) {
-      setErrorMessage('wrong credentials')
+      setMessage('wrong credentials')
       setTimeout(() => {
-        setErrorMessage(null)
+        setMessage(null)
       }, 5000)
     }
   }
 
   const handleLogout = () => {
     window.localStorage.clear()
+    blogService.setToken(null)
     setUser(null)
   }
 
-  const loginForm = () => (
-    <Login username={username} password={password} setUsername={setUsername}
-      setPassword={setPassword} handleLogin={handleLogin} />
-  )
+  const handleCreate = async (event) => {
+    event.preventDefault()
+    try {
+      const newBlog = {title, author, url}
+      const createdBlog = await blogService.create(newBlog)
+      setBlogs(blogs.concat(createdBlog))
+      setTitle('')
+      setAuthor('')
+      setUrl('')
+      setMessage(`a new blog ${createdBlog.title} by ${createdBlog.author} added`)
+      setTimeout(() => {
+        setMessage(null)
+      }, 5000)
+    } catch (exception) {
+      setMessage('invalid blog data')
+      setTimeout(() => {
+        setMessage(null)
+      }, 5000)
+    }
+  }
 
-  const bloglist = () => (
-    <BlogList blogs={blogs} user={user} logout={handleLogout}/>
-  )
+  if (user === null)
+    return (
+      <>
+        <h3>{message}</h3>
+        <Login username={username} password={password} setUsername={setUsername}
+          setPassword={setPassword} handleLogin={handleLogin} />
+      </>
+    )
 
   return (
     <div>
-      <div>{errorMessage}</div>
-      {user ? bloglist() : loginForm()}
+      <h2>blogs</h2>
+      <h3>{message}</h3>
+      <div>
+        {user.username} logged in
+        <button onClick={handleLogout}>logout</button>
+      </div>
+      <Createblog title={title} setTitle={setTitle} author={author} setAuthor={setAuthor}
+        url={url} setUrl={setUrl} handleCreate={handleCreate} />
+      <BlogList blogs={blogs}/>
     </div>
   )
 }

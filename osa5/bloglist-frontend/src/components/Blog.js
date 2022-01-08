@@ -6,11 +6,9 @@ const Blog = ({blog}) => (
   </div>
 )
 
-const BlogList = ({blogs, user, logout}) => {
+const BlogList = ({blogs}) => {
   return (
     <div>
-      <h2>blogs</h2>
-      <div>{user.username} logged in <button onClick={logout}>logout</button></div>
       {blogs.map(b => <Blog key={b.id} blog={b} />)}
     </div>
   )
