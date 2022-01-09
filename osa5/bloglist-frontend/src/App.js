@@ -33,7 +33,7 @@ const App = () => {
 
   const updateBlogs = async () => {
     const newBlogs = await blogService.getAll()
-    setBlogs(newBlogs)
+    setBlogs(newBlogs.sort((a, b) => b.likes - a.likes))
   }
 
   if (user === null)
