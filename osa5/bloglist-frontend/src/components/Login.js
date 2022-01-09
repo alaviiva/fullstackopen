@@ -29,17 +29,17 @@ const Login = ({ setUser, setMessage }) => {
       <form onSubmit={handleLogin}>
         <div>
           <label> username
-            <input type="text" value={username} name="Username"
+            <input id='username' type="text" value={username} name="Username"
               onChange={({ target }) => setUsername(target.value)} />
           </label>
         </div>
         <div>
           <label> password
-            <input type="password" value={password} name="Password"
+            <input id='password' type="password" value={password} name="Password"
               onChange={({ target }) => setPassword(target.value)} />
           </label>
         </div>
-        <button type="submit">login</button>
+        <button id='login-button' type="submit">login</button>
       </form>
     </>
   )

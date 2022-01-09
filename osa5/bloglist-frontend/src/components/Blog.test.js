@@ -1,7 +1,6 @@
 import React from 'react'
 import '@testing-library/jest-dom/extend-expect'
 import { render, fireEvent } from '@testing-library/react'
-import { prettyDOM } from '@testing-library/dom'
 import BlogList from './Blog'
 
 
@@ -16,10 +15,10 @@ describe('Blog list', () => {
       url: 'kissa.kala/test',
       likes: 3,
       id: 'abc',
-      user: {username: 'test'}
+      user: { username: 'test' }
     }]
 
-    const user = {username: 'test'}
+    const user = { username: 'test' }
 
     mockHandler = jest.fn()
 

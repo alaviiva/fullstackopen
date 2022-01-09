@@ -14,7 +14,7 @@ const Blog = ({ blog, addLike, user, removeBlog }) => {
   }
 
   const showRemove = {
-    display: user.username === blog.user.username ? '' : 'none'
+    display: (blog.user && user.username === blog.user.username) ? '' : 'none'
   }
 
   if (!showInfo)
