@@ -11,9 +11,7 @@ const App = () => {
   const [user, setUser] = useState(null)
 
   useEffect(() => {
-    blogService.getAll().then(blogs =>
-      setBlogs( blogs )
-    )
+    updateBlogs()
   }, [])
 
   useEffect(() => {
@@ -33,8 +31,9 @@ const App = () => {
     setUser(null)
   }
 
-  const addBlog = (newBlog) => {
-    setBlogs(blogs.concat(newBlog))
+  const updateBlogs = async () => {
+    const newBlogs = await blogService.getAll()
+    setBlogs(newBlogs)
   }
 
   if (user === null)
@@ -46,7 +45,7 @@ const App = () => {
     )
 
   return (
-    <div>
+    <>
       <h2>blogs</h2>
       <h3>{message}</h3>
       <div>
@@ -54,11 +53,11 @@ const App = () => {
         <button onClick={handleLogout}>logout</button>
       </div>
       <Togglable buttonLabel='Create new blog' ref={blogFormRef}>
-        <Createblog addBlog={addBlog} setMessage={setMessage}
+        <Createblog addBlog={updateBlogs} setMessage={setMessage}
           blogFormRef={blogFormRef}/>
       </Togglable>
-      <BlogList blogs={blogs}/>
-    </div>
+      <BlogList blogs={blogs} updateBlogs={updateBlogs}/>
+    </>
   )
 }
 

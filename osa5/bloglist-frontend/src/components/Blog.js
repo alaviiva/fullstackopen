@@ -1,9 +1,15 @@
 import React, {useState} from 'react'
+import blogService from '../services/blogs'
 
-const Blog = ({blog}) => {
+const Blog = ({blog, update}) => {
   const [showInfo, setShowInfo] = useState(false)
 
   const toggleInfo = () => setShowInfo(!showInfo)
+
+  const addLike = async () => {
+    await blogService.update(blog.id, {likes: blog.likes + 1})
+    update()
+  }
 
   const blogStyle = {
     paddingTop: 10,
@@ -26,16 +32,17 @@ const Blog = ({blog}) => {
       {blog.title}
       <button onClick={toggleInfo} >hide</button>
       <div>{blog.url}</div>
-      <div>likes: {blog.likes}<button onClick={() => console.log(blog)}>like</button></div>
+      <div>likes: {blog.likes}<button onClick={addLike}>like</button></div>
       <div>{blog.author}</div>
+      <button onClick={() => console.log(blog)}>kala</button>
     </div>
   )
 }
 
-const BlogList = ({blogs}) => {
+const BlogList = ({blogs, updateBlogs}) => {
   return (
     <div>
-      {blogs.map(b => <Blog key={b.id} blog={b} />)}
+      {blogs.map(b => <Blog key={b.id} blog={b} update={updateBlogs} />)}
     </div>
   )
 }

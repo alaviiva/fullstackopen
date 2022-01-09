@@ -11,7 +11,7 @@ const Createblog = ({addBlog, setMessage, blogFormRef}) => {
     try {
       const newBlog = {title, author, url}
       const createdBlog = await blogService.create(newBlog)
-      addBlog(createdBlog)
+      addBlog()
       setTitle('')
       setAuthor('')
       setUrl('')
