@@ -7,6 +7,7 @@ import BlogList from './Blog'
 
 describe('Blog list', () => {
   let component
+  let mockHandler = jest.fn()
 
   beforeEach(() => {
     const blog = [{
@@ -20,10 +21,10 @@ describe('Blog list', () => {
 
     const user = {username: 'test'}
 
-    const mockHandler = jest.fn()
+    mockHandler = jest.fn()
 
     component = render(
-      <BlogList blogs={blog} update={mockHandler} user={user} />
+      <BlogList blogs={blog} addLike={mockHandler} user={user} removeBlog={jest.fn()}/>
     )
   })
 
@@ -45,5 +46,14 @@ describe('Blog list', () => {
     expect(component.container).toHaveTextContent(
       'likes: 3'
     )
+  })
+
+  test('clicking like-button adds likes', () => {
+    const button = component.getByText('view')
+    fireEvent.click(button)
+    const like = component.getByText('like')
+    fireEvent.click(like)
+    fireEvent.click(like)
+    expect(mockHandler.mock.calls).toHaveLength(2)
   })
 })

@@ -36,6 +36,18 @@ const App = () => {
     setBlogs(newBlogs.sort((a, b) => b.likes - a.likes))
   }
 
+  const addLike = async (blog) => {
+    await blogService.update(blog.id, { likes: blog.likes + 1 })
+    updateBlogs()
+  }
+
+  const removeBlog = async (blog) => {
+    if (window.confirm(`Remove blog ${blog.title} by ${blog.author}`)) {
+      await blogService.remove(blog.id)
+      updateBlogs()
+    }
+  }
+
   if (user === null)
     return (
       <>
@@ -56,7 +68,8 @@ const App = () => {
         <Createblog addBlog={updateBlogs} setMessage={setMessage}
           blogFormRef={blogFormRef}/>
       </Togglable>
-      <BlogList blogs={blogs} updateBlogs={updateBlogs} user={user}/>
+      <BlogList blogs={blogs} addLike={addLike}
+        user={user} removeBlog={removeBlog}/>
     </>
   )
 }
