@@ -23,7 +23,7 @@ const App = () => {
     }
   }, [])
 
-    const blogFormRef = useRef()
+  const blogFormRef = useRef()
 
   const handleLogout = () => {
     window.localStorage.clear()

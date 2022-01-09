@@ -1,13 +1,13 @@
-import React, {useState} from 'react'
+import React, { useState } from 'react'
 import blogService from '../services/blogs'
 
-const Blog = ({blog, update, user}) => {
+const Blog = ({ blog, update, user }) => {
   const [showInfo, setShowInfo] = useState(false)
 
   const toggleInfo = () => setShowInfo(!showInfo)
 
   const addLike = async () => {
-    await blogService.update(blog.id, {likes: blog.likes + 1})
+    await blogService.update(blog.id, { likes: blog.likes + 1 })
     update()
   }
 
@@ -50,7 +50,7 @@ const Blog = ({blog, update, user}) => {
   )
 }
 
-const BlogList = ({blogs, updateBlogs, user}) => {
+const BlogList = ({ blogs, updateBlogs, user }) => {
   return (
     <div>
       {blogs.map(b =>
