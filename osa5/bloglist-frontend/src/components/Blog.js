@@ -1,7 +1,7 @@
 import React, {useState} from 'react'
 import blogService from '../services/blogs'
 
-const Blog = ({blog, update}) => {
+const Blog = ({blog, update, user}) => {
   const [showInfo, setShowInfo] = useState(false)
 
   const toggleInfo = () => setShowInfo(!showInfo)
@@ -11,12 +11,23 @@ const Blog = ({blog, update}) => {
     update()
   }
 
+  const removeBlog = async () => {
+    if (window.confirm(`Remove blog ${blog.title} by ${blog.author}`)) {
+      await blogService.remove(blog.id)
+      update()
+    }
+  }
+
   const blogStyle = {
     paddingTop: 10,
     paddingLeft: 2,
     border: 'solid',
     borderWidth: 1,
     marginBottom: 5
+  }
+
+  const showRemove = {
+    display: user.username === blog.user.username ? '' : 'none'
   }
 
   if (!showInfo)
@@ -34,15 +45,17 @@ const Blog = ({blog, update}) => {
       <div>{blog.url}</div>
       <div>likes: {blog.likes}<button onClick={addLike}>like</button></div>
       <div>{blog.author}</div>
-      <button onClick={() => console.log(blog)}>kala</button>
+      <button style={showRemove} onClick={removeBlog}>remove</button>
     </div>
   )
 }
 
-const BlogList = ({blogs, updateBlogs}) => {
+const BlogList = ({blogs, updateBlogs, user}) => {
   return (
     <div>
-      {blogs.map(b => <Blog key={b.id} blog={b} update={updateBlogs} />)}
+      {blogs.map(b =>
+        <Blog key={b.id} blog={b} update={updateBlogs} user={user} />
+      )}
     </div>
   )
 }
