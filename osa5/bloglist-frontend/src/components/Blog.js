@@ -44,7 +44,7 @@ const Blog = ({ blog, addLike, user, removeBlog }) => {
 
 const BlogList = ({ blogs, addLike, user, removeBlog }) => {
   return (
-    <div>
+    <div id='bloglist'>
       {blogs.map(b =>
         <Blog key={b.id} blog={b} addLike={addLike}
           user={user} removeBlog={removeBlog} />
