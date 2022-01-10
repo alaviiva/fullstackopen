@@ -77,6 +77,21 @@ describe('Blog app', function() {
         cy.contains('remove').click()
         cy.get('#bloglist').should('not.contain', 'Villen kebab')
       })
+
+      it('Blogs are sorted by likes', function() {
+        cy.contains('Create new blog').click()
+        cy.get('[name="Title"]').type('Sepon kebab')
+        cy.get('[name="Author"]').type('Ville')
+        cy.get('[name="Url"]').type('ville.kebab/blog')
+        cy.get('[type="submit"]').click()
+
+        cy.get('#bloglist > :first-child').should('contain', 'Villen kebab')
+        cy.get('#bloglist > :last-child').should('contain', 'Sepon kebab')
+        cy.get('#bloglist > :last-child').contains('view').click()
+        cy.contains('like').click()
+        cy.get('#bloglist > :first-child').should('contain', 'Sepon kebab')
+        cy.get('#bloglist > :last-child').should('contain', 'Villen kebab')
+      })
     })
   })
 })
